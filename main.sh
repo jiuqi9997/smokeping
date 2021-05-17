@@ -89,6 +89,7 @@ get_info() {
 }
 
 compile_smokeping() {
+	rm -rf /tmp/smokeping
 	mkdir -p /tmp/smokeping
 	cd /tmp/smokeping
 	wget https://oss.oetiker.ch/smokeping/pub/smokeping-2.7.3.tar.gz

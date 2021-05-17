@@ -7,8 +7,8 @@ nginx_dir="/etc/nginx"
 nginx_conf_dir="/etc/nginx/conf.d"
 
 install_packages() {
-	rpm_packages="tar zip unzip openssl lsof git jq socat nginx crontabs make gcc rrdtool rrdtool-perl spawn-fcgi"
-	apt_packages="tar zip unzip openssl lsof git jq socat nginx cron make gcc rrdtool librrds-perl spawn-fcgi"
+	rpm_packages="tar zip unzip openssl openssl-devel lsof git jq socat nginx crontabs make gcc rrdtool rrdtool-perl perl-core spawn-fcgi"
+	apt_packages="tar zip unzip openssl libssl-dev lsof git jq socat nginx cron make gcc rrdtool librrds-perl spawn-fcgi"
 	if [[ $PM == "apt-get" ]]; then
 		$PM update
 		$INS wget curl gnupg2 ca-certificates dmidecode lsb-release
@@ -109,9 +109,9 @@ configure() {
 	wget $origin/config -O /usr/local/smokeping/etc/config
 	wget $origin/systemd -O /etc/systemd/system/smokeping.service && systemctl enable smokeping
 	wget $origin/slave.sh -O /usr/local/smokeping/bin/slave.sh
-	sed -i 's/SLAVE_CODE/$code/g' /usr/local/smokeping/etc/config /usr/local/smokeping/bin/slave.sh
-	sed -i 's/SLAVE_NAME/$name/g' /usr/local/smokeping/etc/config
-	sed -i 's/MASTER_IP/$ip/g' /usr/local/smokeping/bin/slave.sh
+	sed -i 's/SLAVE_CODE/'$code'/g' /usr/local/smokeping/etc/config /usr/local/smokeping/bin/slave.sh
+	sed -i 's/SLAVE_NAME/'$name'/g' /usr/local/smokeping/etc/config
+	sed -i 's/MASTER_IP/'$ip'/g' /usr/local/smokeping/bin/slave.sh
 	echo "$code:$sec" > /usr/local/smokeping/etc/smokeping_secrets.dist
 	echo "$sec" > /usr/local/smokeping/etc/secrets
 	chmod 700 /usr/local/smokeping/etc/secrets /usr/local/smokeping/etc/smokeping_secrets.dist

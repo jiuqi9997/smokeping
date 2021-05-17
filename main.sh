@@ -7,8 +7,8 @@ nginx_dir="/etc/nginx"
 nginx_conf_dir="/etc/nginx/conf.d"
 
 install_packages() {
-	rpm_packages="tar zip unzip openssl openssl-devel lsof git jq socat nginx crontabs make gcc rrdtool rrdtool-perl perl-core spawn-fcgi"
-	apt_packages="tar zip unzip openssl libssl-dev lsof git jq socat nginx cron make gcc rrdtool librrds-perl spawn-fcgi"
+	rpm_packages="tar zip unzip openssl openssl-devel lsof git jq socat nginx crontabs make gcc rrdtool rrdtool-perl perl-core spawn-fcgi traceroute"
+	apt_packages="tar zip unzip openssl libssl-dev lsof git jq socat nginx cron make gcc rrdtool librrds-perl spawn-fcgi traceroute"
 	if [[ $PM == "apt-get" ]]; then
 		$PM update
 		$INS wget curl gnupg2 ca-certificates dmidecode lsb-release
@@ -132,7 +132,7 @@ configure
 
 systemctl start smokeping
 sleep 3
-systemctl status smokeping | grep -q 'Sent data to Server and got new config in response' || error=1
+systemctl status smokeping | grep -q 'TCPPing' || error=1
 [[ $error ]] && echo "启动失败" && exit 1
 
 rm -rf /tmp/smokeping

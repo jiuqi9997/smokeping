@@ -68,7 +68,8 @@ http {
 EOF
 	systemctl enable nginx
 	systemctl start nginx
-	ps -ef | grep -q nginx || echo "Nginx安装失败" && exit 1
+	ps -ef | grep -q nginx || error=1
+	[[ $error ]] && echo "Nginx安装失败" && exit 1
 }
 
 get_info() {
@@ -100,7 +101,8 @@ compile_smokeping() {
 
 configure() {
 	origin="https://github.com/jiuqi9997/smokeping/raw/main"
-	ip=$(curl -sL https://api64.ipify.org -4) || echo "获取本机ip失败" && exit 1
+	ip=$(curl -sL https://api64.ipify.org -4) || error=1
+	[[ $error ]] && echo "获取本机ip失败" && exit 1
 	wget $origin/tcpping -O /usr/bin/tcpping && chmod +x /usr/bin/tcpping
 	wget $origin/nginx.conf -O $nginx_conf_dir/default.conf && nginx -s reload
 	wget $origin/config -O /usr/local/smokeping/etc/config
@@ -116,7 +118,8 @@ configure() {
 	cd /usr/local/smokeping/htdocs
 	mkdir -p data var cache ../cache
 	mv smokeping.fcgi.dist smokeping.fcgi
-	../bin/smokeping --debug || echo "测试运行失败！" && exit 1
+	../bin/smokeping --debug || error=1
+	[[ $error ]] && echo "测试运行失败！" && exit 1
 }
 
 
@@ -127,7 +130,9 @@ compile_smokeping
 configure
 
 systemctl start smokeping
-systemctl status smokeping | grep -q 'Sent data to Server and got new config in response' || echo "启动失败" && exit 1
+sleep 3
+systemctl status smokeping | grep -q 'Sent data to Server and got new config in response' || error=1
+[[ $error ]] && echo "启动失败" && exit 1
 
 rm -rf /tmp/smokeping
 

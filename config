@@ -1,0 +1,171 @@
+*** General ***
+
+owner    = X
+contact  = some@address.nowhere
+mailhost = my.mail.host
+imgcache = /usr/local/smokeping/htdocs/cache
+imgurl   = cache
+datadir  = /usr/local/smokeping/htdocs/data
+piddir  = /usr/local/smokeping/htdocs/var
+cgiurl   = http://some.url/smokeping.cgi
+smokemail = /usr/local/smokeping/etc/smokemail.dist
+tmail = /usr/local/smokeping/etc/tmail.dist
+syslogfacility = local0
+
+
+*** Alerts ***
+
+to = alertee@address.somewhere
+from = smokealert@company.xy
+
++someloss
+type = loss
+pattern = >0%,*12*,>0%,*12*,>0%
+comment = loss 3 times  in a row
+
+
+*** Database ***
+
+step     = 300
+pings    = 20
+
+
+AVERAGE  0.5   1  1008
+AVERAGE  0.5  12  4320
+    MIN  0.5  12  4320
+    MAX  0.5  12  4320
+AVERAGE  0.5 144   720
+    MAX  0.5 144   720
+    MIN  0.5 144   720
+
+
+*** Presentation ***
+
+template = /usr/local/smokeping/etc/basepage.html.dist
+
++ overview 
+
+width = 600
+height = 200
+range = 24h
+
++ detail
+
+width = 600
+height = 200
+unison_tolerance = 2
+
+"Last 30 Minutes"    30m
+"Last 1 Hour"    1h
+"Last 3 Hours"    3h
+"Last 24 Hours"   24h
+"Last 3 Days"    3d
+"Last 7 Days"   7d
+"Last 30 Days"    30d
+"Last 1 Year"    1y
+
+
+*** Probes ***
+
++ TCPPing
+binary = /usr/bin/tcpping
+forks = 5
+offset = 50%
+step = 300
+timeout = 15
+
+
+*** Slaves ***
+
+secrets=/usr/local/smokeping/etc/smokeping_secrets.dist
+
++ SLAVE_CODE
+display_name = SLAVE_NAME
+location = SLAVE_NAME
+color = 0000ff
+
+
+*** Targets ***
+
+probe = TCPPing
+
+menu = Top
+title = Network Latency Grapher
+remark = Welcome to this SmokePing website. <br />
+
++ ping
+
+menu = 大陆方向
+title = 大陆方向
+nomasterpoll = yes
+host = /ping/ct-fs~SLAVE_CODE /ping/ct-sh~SLAVE_CODE /ping/cu-sh~SLAVE_CODE /ping/cu-bj~SLAVE_CODE /ping/cm-gz~SLAVE_CODE /ping/cm-sh~SLAVE_CODE
+
+++ ct-fs
+
+menu = 佛山电信
+title = 佛山电信
+slaves = SLAVE_CODE
+host = 183.60.108.198
+
+++ ct-sh
+
+menu = 上海电信
+title = 上海电信
+slaves = SLAVE_CODE
+host = 180.153.28.5
+
+++ cu-sh
+
+menu = 上海联通
+title = 上海联通
+slaves = SLAVE_CODE
+host = 211.95.52.116
+
+++ cu-bj
+
+menu = 北京联通
+title = 北京联通
+slaves = SLAVE_CODE
+host = 123.125.99.1
+
+++ cm-gz
+
+menu = 广州移动
+title = 广州移动
+slaves = SLAVE_CODE
+host = 120.232.176.254
+
+++ cm-sh
+
+menu = 上海移动
+title = 上海移动
+slaves = SLAVE_CODE
+host = 221.183.55.33
+
++ ping1
+
+menu = 国际方向
+title = 国际方向
+nomasterpoll = yes
+host = /ping1/cf~SLAVE_CODE /ping1/hk-pccw~SLAVE_CODE /ping1/sg-vu~SLAVE_CODE
+
+++ cf
+
+menu = 香港 CF
+title = 香港 CF
+slaves = SLAVE_CODE
+host = 104.16.124.96
+
+++ hk-pccw
+
+menu = 香港 PCCW
+title = 香港 PCCW
+slaves = SLAVE_CODE
+host = 63.216.151.43
+
+++ sg-vu
+
+menu = 新加坡 Vultr
+title = 新加坡 Vultr
+slaves = SLAVE_CODE
+host = 45.32.100.168

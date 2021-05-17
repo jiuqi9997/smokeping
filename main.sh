@@ -83,9 +83,9 @@ get_info() {
 	else
 		exit 1
 	fi
-	read -rp "输入服务器名称（如香港）:" $name
-	read -rp "输入服务器代号（如hk）:" $code
-	read -rp "输入通信密钥（不限长度）:" $sec
+	read -rp "输入服务器名称（如香港）:" name
+	read -rp "输入服务器代号（如hk）:" code
+	read -rp "输入通信密钥（不限长度）:" sec
 }
 
 compile_smokeping() {
@@ -95,7 +95,7 @@ compile_smokeping() {
 	tar xzvf smokeping-2.7.3.tar.gz
 	cd smokeping-2.7.3
 	./configure --prefix=/usr/local/smokeping
-	make install
+	make install || gmake install
 	[[ ! -f /usr/local/smokeping/bin/smokeping ]] && echo "编译smokeping失败" && exit 1
 }
 

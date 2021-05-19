@@ -33,6 +33,9 @@ EOF
 		update-ca-trust force-enable
 		$INS $rpm_packages
 	fi
+	sed -i '/zh_CN/d' /etc/locale.gen
+	echo "zh_CN.UTF-8 UTF-8" >> /etc/locale.gen
+	locale-gen
 	mkdir -p $nginx_dir
 	cat > $nginx_dir/nginx.conf <<EOF
 worker_processes  auto;

@@ -93,7 +93,7 @@ menu = Top
 title = Network Latency Grapher
 remark = Welcome to this SmokePing website. <br />
 
-+ ping
++ Mainland
 
 menu = 大陆方向
 title = 大陆方向
@@ -142,7 +142,7 @@ title = 上海移动
 slaves = SLAVE_CODE
 host = 221.183.55.33
 
-+ ping1
++ Global
 
 menu = 国际方向
 title = 国际方向
@@ -151,8 +151,8 @@ host = /ping1/cf~SLAVE_CODE /ping1/hk-pccw~SLAVE_CODE /ping1/sg-vu~SLAVE_CODE
 
 ++ cf
 
-menu = 香港 CF
-title = 香港 CF
+menu = 香港 Cloudflare
+title = 香港 Cloudflare
 slaves = SLAVE_CODE
 host = 104.16.124.96
 

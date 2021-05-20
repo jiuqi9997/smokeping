@@ -8,7 +8,10 @@ nginx_conf_dir="/etc/nginx/conf.d"
 
 install_packages() {
 	rpm_packages="tar zip unzip openssl openssl-devel lsof git jq socat nginx crontabs make gcc rrdtool rrdtool-perl perl-core spawn-fcgi traceroute zlib zlib-devel"
-	apt_packages="tar zip unzip openssl libssl-dev lsof git jq socat nginx cron make gcc rrdtool librrds-perl spawn-fcgi traceroute zlib1g zlib1g-dev"
+	apt_packages="tar zip unzip openssl libssl-dev lsof git jq socat nginx cron make gcc rrdtool librrds-perl spawn-fcgi traceroute zlib1g zlib1g-dev fonts-droid-fallback"
+	sed -i '/zh_CN.UTF-8/d' /etc/locale.gen
+	echo "zh_CN.UTF-8 UTF-8" >> /etc/locale.gen
+	locale-gen
 	if [[ $PM == "apt-get" ]]; then
 		$PM update
 		$INS wget curl gnupg2 ca-certificates dmidecode lsb-release
@@ -33,9 +36,6 @@ EOF
 		update-ca-trust force-enable
 		$INS $rpm_packages
 	fi
-	sed -i '/zh_CN/d' /etc/locale.gen
-	echo "zh_CN.UTF-8 UTF-8" >> /etc/locale.gen
-	locale-gen
 	mkdir -p $nginx_dir
 	cat > $nginx_dir/nginx.conf <<EOF
 worker_processes  auto;

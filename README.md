@@ -12,7 +12,7 @@ SmokePing 是由 rrdtool 的作者开发的一款监控网络状态和稳定性�
 bash -c "$(curl -L https://github.com/jiuqi9997/smokeping/raw/main/main.sh)"
 ```
 
-如果出现 `command not found` 请执行 `apt-get install -y` 或 `yum install curl -y`。
+如果出现 `command not found` 请执行 `apt-get install curl -y` 或 `yum install curl -y`。
 
 ## 配置：
 SmokePing 主配置文件（包括目标节点）为 `/usr/local/smokeping/etc/config`，此文件的结构及其修改请查阅相关教程。

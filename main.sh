@@ -74,6 +74,8 @@ EOF
 		$INS wget curl ca-certificates dmidecode
 		update-ca-trust force-enable
 		$INS $rpm_packages
+		firewall-cmd --zone=public --add-port=80/tcp --permanent
+		systemctl restart firewalld.service
     fi
 	mkdir -p $nginx_dir
 	cat > $nginx_dir/nginx.conf <<EOF

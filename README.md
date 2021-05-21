@@ -6,8 +6,6 @@ SmokePing 是由 rrdtool 的作者开发的一款监控网络状态和稳定性�
 
 目前支持 Amazon Linux 2 (AMI), CentOS 7 及以上、Debian 9 及以上、Oracle Linux 7 及以上和 Ubuntu 18 及以上的 Linux 发行版。
 
-**注：** Deb 系的中文支持依赖 `fonts-droid-fallback`，目前已经解决；红帽系由于前述问题目前无法输出中文，欢迎提出 PR。
-
 ## 用法：
 
 ```

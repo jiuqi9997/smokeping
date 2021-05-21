@@ -71,7 +71,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
 gpgcheck=1
 enabled=1
 EOF
-		$INS wget curl ca-certificates dmidecode epel-release
+		$INS wget curl ca-certificates dmidecode
 		update-ca-trust force-enable
 		$INS $rpm_packages
     fi

@@ -64,9 +64,9 @@ gpgkey=https://nginx.org/keys/nginx_signing.key
 module_hotfixes=true
 EOF
         cat > /etc/yum.repos.d/elrepo.repo <<EOF
-[ol$releasever_developer_EPEL]
-name=Oracle Linux $releasever Developement Packages ($basearch)
-baseurl=http://yum.oracle.com/repo/OracleLinux/OL$releasever/developer_EPEL/$basearch/
+[ol_developer_EPEL]
+name=Oracle Linux Developement Packages
+baseurl=http://yum.oracle.com/repo/OracleLinux/OL$releasever/developer_EPEL/\$basearch/
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
 gpgcheck=1
 enabled=1

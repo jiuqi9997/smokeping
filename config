@@ -42,6 +42,7 @@ AVERAGE  0.5 144   720
 *** Presentation ***
 
 template = /usr/local/smokeping/etc/basepage.html.dist
+charset = utf-8
 
 + overview 
 

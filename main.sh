@@ -119,6 +119,7 @@ get_info() {
 	if [[ $ID == "centos"  || $ID == "amzn"  || $ID == "ol" ]]; then
 		PM="yum"
 		INS="yum install -y"
+		releasever=${VERSION: 0: 1}
 	elif [[ $ID == "debian" || $ID == "ubuntu" ]]; then
 		PM="apt-get"
 		INS="apt-get install -y"

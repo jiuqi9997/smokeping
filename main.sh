@@ -48,7 +48,7 @@ gpgkey=https://nginx.org/keys/nginx_signing.key
 module_hotfixes=true
 EOF
 		$INS wget curl ca-certificates dmidecode
-        amazon-linux-extras install epel
+        	amazon-linux-extras install epel
 		update-ca-trust force-enable
 		$INS $rpm_packages
     elif [[ $ID == "ol" ]]; then

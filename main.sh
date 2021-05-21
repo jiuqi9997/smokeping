@@ -50,6 +50,7 @@ EOF
 		$INS wget curl ca-certificates dmidecode
 		update-ca-trust force-enable
 		amazon-linux-extras install epel -y
+		$INS https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 		$INS $rpm_packages
     elif [[ $ID == "ol" ]]; then
     sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config

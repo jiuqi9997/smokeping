@@ -77,7 +77,7 @@ EOF
 
 get_info() {
 	source /etc/os-release || source /usr/lib/os-release || exit 1
-	if [[ $ID == "centos" || $ID == "amzn" ]]; then
+	if [[ $ID == "centos" || $ID == "ol" ]]; then
 		PM="yum"
 		INS="yum install -y"
 	elif [[ $ID == "debian" || $ID == "ubuntu" ]]; then

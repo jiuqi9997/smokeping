@@ -12,7 +12,7 @@ install_packages() {
 	sed -i '/zh_CN.UTF-8/d' /etc/locale.gen
 	echo "zh_CN.UTF-8 UTF-8" >> /etc/locale.gen
 	locale-gen
-	if [[ $PM == "apt-get" ]]; then
+	if [[ $ID == "debian" || $ID == "ubuntu" ]]; then
 		$PM update
 		$INS wget curl gnupg2 ca-certificates dmidecode lsb-release
 		update-ca-certificates
@@ -20,7 +20,7 @@ install_packages() {
 		curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add -
 		$PM update
 		$INS $apt_packages
-	elif [[ $PM == "yum" || $PM == "dnf" ]]; then
+	elif [[ $ID == "centos" ]]; then
 		sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
 		setenforce 0
 		cat > /etc/yum.repos.d/nginx.repo <<EOF
@@ -35,7 +35,46 @@ EOF
 		$INS wget curl ca-certificates dmidecode epel-release
 		update-ca-trust force-enable
 		$INS $rpm_packages
-	fi
+    elif [[ $ID == "amzn" ]]; then 
+        sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
+		setenforce 0
+		cat > /etc/yum.repos.d/nginx.repo <<EOF
+[nginx-stable]
+name=nginx stable repo
+baseurl=http://nginx.org/packages/centos/7/\$basearch/
+gpgcheck=1
+enabled=1
+gpgkey=https://nginx.org/keys/nginx_signing.key
+module_hotfixes=true
+EOF
+		$INS wget curl ca-certificates dmidecode
+        amazon-linux-extras install epel
+		update-ca-trust force-enable
+		$INS $rpm_packages
+    elif [[ $ID == "ol" ]]; then
+    sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
+		setenforce 0
+		cat > /etc/yum.repos.d/nginx.repo <<EOF
+[nginx-stable]
+name=nginx stable repo
+baseurl=http://nginx.org/packages/centos/\$releasever/\$basearch/
+gpgcheck=1
+enabled=1
+gpgkey=https://nginx.org/keys/nginx_signing.key
+module_hotfixes=true
+EOF
+        cat > /etc/yum.repos.d/elrepo.repo <<EOF
+[ol$releasever_developer_EPEL]
+name=Oracle Linux $releasever Developement Packages ($basearch)
+baseurl=http://yum.oracle.com/repo/OracleLinux/OL$releasever/developer_EPEL/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+gpgcheck=1
+enabled=1
+EOF
+		$INS wget curl ca-certificates dmidecode epel-release
+		update-ca-trust force-enable
+		$INS $rpm_packages
+    fi
 	mkdir -p $nginx_dir
 	cat > $nginx_dir/nginx.conf <<EOF
 worker_processes  auto;
@@ -72,12 +111,12 @@ EOF
 	systemctl enable nginx
 	systemctl start nginx
 	ps -ef | grep -q nginx || error=1
-	[[ $error ]] && echo "Nginx安装失败" && exit 1
+	[[ $error ]] && echo "Nginx 安装失败" && exit 1
 }
 
 get_info() {
 	source /etc/os-release || source /usr/lib/os-release || exit 1
-	if [[ $ID == "centos" || $ID == "ol" ]]; then
+	if [[ $ID == "centos"  || $ID == "amzn"  || $ID == "ol" ]]; then
 		PM="yum"
 		INS="yum install -y"
 	elif [[ $ID == "debian" || $ID == "ubuntu" ]]; then
@@ -86,8 +125,8 @@ get_info() {
 	else
 		exit 1
 	fi
-	read -rp "输入服务器名称（如香港）:" name
-	read -rp "输入服务器代号（如hk）:" code
+	read -rp "输入服务器名称（如 香港）:" name
+	read -rp "输入服务器代号（如 HK）:" code
 	read -rp "输入通信密钥（不限长度）:" sec
 }
 
@@ -103,13 +142,13 @@ compile_smokeping() {
 		ln -s $(type -P make) /usr/bin/gmake
 	fi
 	make install || gmake install
-	[[ ! -f /usr/local/smokeping/bin/smokeping ]] && echo "编译smokeping失败" && exit 1
+	[[ ! -f /usr/local/smokeping/bin/smokeping ]] && echo "编译 SmokePing 失败" && exit 1
 }
 
 configure() {
 	origin="https://github.com/jiuqi9997/smokeping/raw/main"
 	ip=$(curl -sL https://api64.ipify.org -4) || error=1
-	[[ $error ]] && echo "获取本机ip失败" && exit 1
+	[[ $error ]] && echo "获取本机 IP 地址失败" && exit 1
 	wget $origin/tcpping -O /usr/bin/tcpping && chmod +x /usr/bin/tcpping
 	wget $origin/nginx.conf -O $nginx_conf_dir/default.conf && nginx -s reload
 	wget $origin/config -O /usr/local/smokeping/etc/config

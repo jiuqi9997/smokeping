@@ -7,8 +7,11 @@ nginx_dir="/etc/nginx"
 nginx_conf_dir="/etc/nginx/conf.d"
 
 install_packages() {
-	rpm_packages="tar zip unzip openssl openssl-devel lsof git jq socat nginx crontabs make gcc rrdtool rrdtool-perl perl-core spawn-fcgi"
-	apt_packages="tar zip unzip openssl libssl-dev lsof git jq socat nginx cron make gcc rrdtool librrds-perl spawn-fcgi"
+	rpm_packages="tar zip unzip openssl openssl-devel lsof git jq socat nginx crontabs make gcc rrdtool rrdtool-perl perl-core spawn-fcgi traceroute zlib zlib-devel"
+	apt_packages="tar zip unzip openssl libssl-dev lsof git jq socat nginx cron make gcc rrdtool librrds-perl spawn-fcgi traceroute zlib1g zlib1g-dev fonts-droid-fallback"
+	sed -i '/zh_CN.UTF-8/d' /etc/locale.gen
+	echo "zh_CN.UTF-8 UTF-8" >> /etc/locale.gen
+	locale-gen
 	if [[ $PM == "apt-get" ]]; then
 		$PM update
 		$INS wget curl gnupg2 ca-certificates dmidecode lsb-release
@@ -74,7 +77,7 @@ EOF
 
 get_info() {
 	source /etc/os-release || source /usr/lib/os-release || exit 1
-	if [[ $ID == "centos" ]]; then
+	if [[ $ID == "centos" || $ID == "ol" ]]; then
 		PM="yum"
 		INS="yum install -y"
 	elif [[ $ID == "debian" || $ID == "ubuntu" ]]; then
@@ -96,6 +99,9 @@ compile_smokeping() {
 	tar xzvf smokeping-2.7.3.tar.gz
 	cd smokeping-2.7.3
 	./configure --prefix=/usr/local/smokeping
+	if type -P make && ! type -P gmake; then
+		ln -s $(type -P make) /usr/bin/gmake
+	fi
 	make install || gmake install
 	[[ ! -f /usr/local/smokeping/bin/smokeping ]] && echo "编译smokeping失败" && exit 1
 }
@@ -132,7 +138,7 @@ configure
 
 systemctl start smokeping
 sleep 3
-systemctl status smokeping | grep -q 'Sent data to Server and got new config in response' || error=1
+systemctl status smokeping | grep -q 'TCPPing' || error=1
 [[ $error ]] && echo "启动失败" && exit 1
 
 rm -rf /tmp/smokeping

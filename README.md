@@ -18,10 +18,14 @@ bash -c "$(curl -L https://github.com/jiuqi9997/smokeping/raw/main/main.sh)"
 ## 常见问题
 ### `epel/x86_64` 错误
 常见于 Amazon Linux 2 (AMI)，因 AWS 与 fedoraproject.org 之间随机存在连通性问题，而 Amazon Linux 2 官方指导[\[1\]](https://aws.amazon.com/cn/premiumsupport/knowledge-center/ec2-enable-epel)[\[2\]](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/add-repositories.html)中指示使用 `amazon-linux-extras install epel -y` 命令或 `yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm` 命令安装的 ELRepo 源均以 fedoraproject.org 为 Baseurl 或 Metalink 终结点。
+
 **解决方案：** 更换非 Amazon Linux 2 系统。
+
 ### 中文显示异常
 常见于 Debian 或 Ubuntu，可能因系统精简掉了中文字体。
+
 **解决方案：** 执行 `apt-get install -y wqy-zenhei-fonts`。
+
 
 ## SmokePing 配置
 SmokePing 主配置文件（包括目标节点）为 `/usr/local/smokeping/etc/config`，此文件的结构及其修改请查阅相关教程，附上[官方 Examples](https://oss.oetiker.ch/smokeping/doc/smokeping_examples.en.html)。

@@ -99,14 +99,14 @@ remark = Welcome to this SmokePing website. <br />
 menu = 大陆方向
 title = 大陆方向
 nomasterpoll = yes
-host = /mainland/ct-fs~SLAVE_CODE /mainland/ct-sh~SLAVE_CODE /mainland/cu-sh~SLAVE_CODE /mainland/cu-bj~SLAVE_CODE /mainland/cm-gz~SLAVE_CODE /mainland/cm-sh~SLAVE_CODE
+host = /mainland/ct-gz~SLAVE_CODE /mainland/ct-sh~SLAVE_CODE /mainland/cu-gz~SLAVE_CODE /mainland/cu-sh~SLAVE_CODE /mainland/cm-gz~SLAVE_CODE /mainland/cm-sh~SLAVE_CODE
 
-++ ct-fs
+++ ct-gz
 
-menu = 佛山电信
-title = 佛山电信
+menu = 广州电信
+title = 广州电信
 slaves = SLAVE_CODE
-host = 183.60.108.198
+host = 14.215.116.1
 
 ++ ct-sh
 
@@ -115,19 +115,19 @@ title = 上海电信
 slaves = SLAVE_CODE
 host = 180.153.28.5
 
+++ cu-gz
+
+menu = 广州联通
+title = 广州联通
+slaves = SLAVE_CODE
+host = 157.255.70.5
+
 ++ cu-sh
 
 menu = 上海联通
 title = 上海联通
 slaves = SLAVE_CODE
 host = 211.95.52.116
-
-++ cu-bj
-
-menu = 北京联通
-title = 北京联通
-slaves = SLAVE_CODE
-host = 123.125.99.1
 
 ++ cm-gz
 
@@ -141,7 +141,7 @@ host = 120.232.176.254
 menu = 上海移动
 title = 上海移动
 slaves = SLAVE_CODE
-host = 221.183.55.33
+host = 221.183.55.22
 
 + global
 
@@ -152,8 +152,8 @@ host = /global/cf~SLAVE_CODE /global/hk-pccw~SLAVE_CODE /global/sg-vu~SLAVE_CODE
 
 ++ cf
 
-menu = 香港 Cloudflare
-title = 香港 Cloudflare
+menu = Cloudflare
+title = Cloudflare
 slaves = SLAVE_CODE
 host = 104.16.124.96
 

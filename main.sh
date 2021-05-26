@@ -9,9 +9,6 @@ nginx_conf_dir="/etc/nginx/conf.d"
 install_packages() {
 	rpm_packages="tar zip unzip openssl openssl-devel lsof git jq socat nginx crontabs make gcc rrdtool rrdtool-perl perl-core spawn-fcgi traceroute zlib zlib-devel wqy-zenhei-fonts"
 	apt_packages="tar zip unzip openssl libssl-dev lsof git jq socat nginx cron make gcc rrdtool librrds-perl spawn-fcgi traceroute zlib1g zlib1g-dev fonts-droid-fallback"
-	sed -i '/zh_CN.UTF-8/d' /etc/locale.gen
-	echo "zh_CN.UTF-8 UTF-8" >> /etc/locale.gen
-	locale-gen
 	if [[ $ID == "debian" || $ID == "ubuntu" ]]; then
 		$PM update
 		$INS wget curl gnupg2 ca-certificates dmidecode lsb-release

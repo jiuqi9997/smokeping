@@ -156,7 +156,7 @@ configure() {
 	wget $origin/tcpping -O /usr/bin/tcpping && chmod +x /usr/bin/tcpping
 	wget $origin/nginx.conf -O $nginx_conf_dir/default.conf && nginx -s reload
 	wget $origin/config -O /usr/local/smokeping/etc/config
-	wget $origin/systemd -O /etc/systemd/system/smokeping.service && systemctl enable smokeping
+	wget $origin/systemd -O /usr/lib/systemd/system/smokeping.service && systemctl enable smokeping
 	wget $origin/slave.sh -O /usr/local/smokeping/bin/slave.sh
 	sed -i 's/SLAVE_CODE/'$code'/g' /usr/local/smokeping/etc/config /usr/local/smokeping/bin/slave.sh
 	sed -i 's/SLAVE_NAME/'$name'/g' /usr/local/smokeping/etc/config

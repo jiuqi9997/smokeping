@@ -21,11 +21,5 @@ bash -c "$(curl -L https://github.com/jiuqi9997/smokeping/raw/main/main.sh)"
 
 **解决方案：** 更换非 Amazon Linux 2 系统。
 
-### 中文显示异常
-常见于 Debian 或 Ubuntu，可能因系统精简掉了中文字体。
-
-**解决方案：** 执行 `apt-get install -y wqy-zenhei-fonts`。
-
-
 ## SmokePing 配置
 SmokePing 主配置文件（包括目标节点）为 `/usr/local/smokeping/etc/config`，此文件的结构及其修改请查阅相关教程，附上[官方 Examples](https://oss.oetiker.ch/smokeping/doc/smokeping_examples.en.html)。

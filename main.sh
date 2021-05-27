@@ -155,6 +155,7 @@ configure() {
 	wget $origin/config -O /usr/local/smokeping/etc/config
 	wget $origin/systemd -O /usr/lib/systemd/system/smokeping.service && systemctl enable smokeping
 	wget $origin/slave.sh -O /usr/local/smokeping/bin/slave.sh
+	sed -i 's/some.url/'$ip'/g' /usr/local/smokeping/etc/config
 	sed -i 's/SLAVE_CODE/'$code'/g' /usr/local/smokeping/etc/config /usr/local/smokeping/bin/slave.sh
 	sed -i 's/SLAVE_NAME/'$name'/g' /usr/local/smokeping/etc/config
 	sed -i 's/MASTER_IP/'$ip'/g' /usr/local/smokeping/bin/slave.sh

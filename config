@@ -73,7 +73,7 @@ binary = /usr/bin/tcpping
 forks = 5
 offset = 50%
 step = 300
-timeout = 15
+timeout = 1
 
 
 *** Slaves ***

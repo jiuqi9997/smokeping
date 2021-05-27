@@ -126,6 +126,8 @@ get_info() {
 	else
 		exit 1
 	fi
+	ss -tnlp | grep -q ":9007 " && echo "需要9007端口，现已被占用" && exit 1
+	ss -tnlp | grep -q ":9008 " && echo "需要9008端口，现已被占用" && exit 1
 	read -rp "输入服务器名称（如 香港）:" name
 	read -rp "输入服务器代号（如 HK）:" code
 	read -rp "输入通信密钥（不限长度）:" sec
@@ -151,14 +153,14 @@ configure() {
 	ip=$(curl -sL https://api64.ipify.org -4) || error=1
 	[[ $error ]] && echo "获取本机 IP 地址失败" && exit 1
 	wget $origin/tcpping -O /usr/bin/tcpping && chmod +x /usr/bin/tcpping
-	wget $origin/nginx.conf -O $nginx_conf_dir/default.conf && nginx -s reload
+	wget $origin/nginx.conf -O $nginx_conf_dir/smokeping.conf && nginx -s reload
 	wget $origin/config -O /usr/local/smokeping/etc/config
 	wget $origin/systemd -O /usr/lib/systemd/system/smokeping.service && systemctl enable smokeping
 	wget $origin/slave.sh -O /usr/local/smokeping/bin/slave.sh
-	sed -i 's/some.url/'$ip'/g' /usr/local/smokeping/etc/config
+	sed -i 's/some.url/'$ip':9008/g' /usr/local/smokeping/etc/config
 	sed -i 's/SLAVE_CODE/'$code'/g' /usr/local/smokeping/etc/config /usr/local/smokeping/bin/slave.sh
 	sed -i 's/SLAVE_NAME/'$name'/g' /usr/local/smokeping/etc/config
-	sed -i 's/MASTER_IP/'$ip'/g' /usr/local/smokeping/bin/slave.sh
+	sed -i 's/MASTER_IP/'$ip':9008/g' /usr/local/smokeping/bin/slave.sh
 	echo "$code:$sec" > /usr/local/smokeping/etc/smokeping_secrets.dist
 	echo "$sec" > /usr/local/smokeping/etc/secrets
 	chmod 700 /usr/local/smokeping/etc/secrets /usr/local/smokeping/etc/smokeping_secrets.dist
@@ -184,4 +186,8 @@ systemctl status smokeping | grep -q 'TCPPing' || error=1
 
 rm -rf /tmp/smokeping
 
-echo "安装完成，页面网址：http://$ip （监控数据不会立即生成）"
+echo "安装完成，页面网址：http://$ip:9008/"
+echo ""
+echo "注意："
+echo "如有必要请在防火墙放行9008端口"
+echo "请等待一会，监控数据不会立即更新"

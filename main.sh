@@ -110,7 +110,7 @@ http {
 EOF
 	systemctl enable nginx
 	systemctl start nginx
-	ps -ef | grep -q nginx || error=1
+	ps -ef | sed '/grep/d' | grep -q nginx || error=1
 	[[ $error ]] && echo "Nginx 安装失败" && exit 1
 }
 

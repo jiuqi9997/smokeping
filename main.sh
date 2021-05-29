@@ -134,7 +134,8 @@ get_info() {
 }
 
 compile_smokeping() {
-	rm -rf /tmp/smokeping
+	[[ -e /usr/local/smokeping ]] && rm -rf /usr/local/smokeping
+	[[ -e /tmp/smokeping ]] && rm -rf /tmp/smokeping
 	mkdir -p /tmp/smokeping
 	cd /tmp/smokeping
 	wget https://oss.oetiker.ch/smokeping/pub/smokeping-2.7.3.tar.gz
@@ -145,7 +146,7 @@ compile_smokeping() {
 		ln -s $(type -P make) /usr/bin/gmake
 	fi
 	make install || gmake install
-	[[ ! -f /usr/local/smokeping/bin/smokeping ]] && echo "编译 SmokePing 失败" && exit 1
+	[[ ! -e /usr/local/smokeping/bin/smokeping ]] && echo "编译 SmokePing 失败" && exit 1
 }
 
 configure() {

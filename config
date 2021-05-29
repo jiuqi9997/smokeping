@@ -27,7 +27,7 @@ comment = loss 3 times  in a row
 *** Database ***
 
 step     = 300
-pings    = 20
+pings    = 10
 
 
 AVERAGE  0.5   1  1008

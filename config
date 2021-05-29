@@ -69,7 +69,7 @@ unison_tolerance = 2
 *** Probes ***
 
 + TCPPing
-binary = /usr/bin/tcpping
+binary = /usr/bin/tcpping-sp
 forks = 5
 offset = 50%
 step = 300

@@ -152,7 +152,7 @@ configure() {
 	origin="https://github.com/jiuqi9997/smokeping/raw/main"
 	ip=$(curl -sL https://api64.ipify.org -4) || error=1
 	[[ $error ]] && echo "获取本机 IP 地址失败" && exit 1
-	wget $origin/tcpping -O /usr/bin/tcpping && chmod +x /usr/bin/tcpping
+	wget $origin/tcpping-sp -O /usr/bin/tcpping-sp && chmod +x /usr/bin/tcpping-sp
 	wget $origin/nginx.conf -O $nginx_conf_dir/smokeping.conf && nginx -s reload
 	wget $origin/config -O /usr/local/smokeping/etc/config
 	wget $origin/systemd -O /etc/systemd/system/smokeping.service && systemctl enable smokeping

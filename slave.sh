@@ -5,5 +5,5 @@ kill -9 $(ps -ef|grep 'smokeping/bin/smokeping'|awk '$0 !~/grep/ {print $2}' |tr
 
 chown -R nginx:nginx /usr/local/smokeping/htdocs
 /usr/local/smokeping/bin/smokeping --config=/usr/local/smokeping/etc/config &
-/usr/local/smokeping/bin/smokeping --master-url=http://MASTER_IP/ --cache-dir=/usr/local/smokeping/cache/ --shared-secret=/usr/local/smokeping/etc/secrets --slave-name=SLAVE_CODE &
+/usr/local/smokeping/bin/smokeping --master-url=http://127.0.0.1:9008/ --cache-dir=/usr/local/smokeping/cache/ --shared-secret=/usr/local/smokeping/etc/secrets --slave-name=SLAVE_CODE &
 /usr/bin/spawn-fcgi -a 127.0.0.1 -p 9007 -P /var/run/smokeping-fastcgi.pid -u nginx -f /usr/local/smokeping/htdocs/smokeping.fcgi

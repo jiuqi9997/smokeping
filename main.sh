@@ -108,6 +108,7 @@ http {
     include $nginx_conf_dir/*.conf;
 }
 EOF
+	rm -rf $nginx_conf_dir/default.conf
 	systemctl enable nginx
 	systemctl start nginx
 	ps -ef | sed '/grep/d' | grep -q nginx || error=1

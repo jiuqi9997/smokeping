@@ -138,7 +138,7 @@ compile_smokeping() {
 	[[ -e /tmp/smokeping ]] && rm -rf /tmp/smokeping
 	mkdir -p /tmp/smokeping
 	cd /tmp/smokeping
-	wget https://oss.oetiker.ch/smokeping/pub/smokeping-2.7.3.tar.gz
+	wget https://github.com/oetiker/SmokePing/releases/download/2.7.3/smokeping-2.7.3.tar.gz
 	tar xzvf smokeping-2.7.3.tar.gz
 	cd smokeping-2.7.3
 	./configure --prefix=/usr/local/smokeping
@@ -161,7 +161,6 @@ configure() {
 	sed -i 's/some.url/'$ip':9008/g' /usr/local/smokeping/etc/config
 	sed -i 's/SLAVE_CODE/'$code'/g' /usr/local/smokeping/etc/config /usr/local/smokeping/bin/slave.sh
 	sed -i 's/SLAVE_NAME/'$name'/g' /usr/local/smokeping/etc/config
-	sed -i 's/MASTER_IP/'$ip':9008/g' /usr/local/smokeping/bin/slave.sh
 	echo "$code:$sec" > /usr/local/smokeping/etc/smokeping_secrets.dist
 	echo "$sec" > /usr/local/smokeping/etc/secrets
 	chmod 700 /usr/local/smokeping/etc/secrets /usr/local/smokeping/etc/smokeping_secrets.dist

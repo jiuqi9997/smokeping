@@ -26,7 +26,7 @@ comment = loss 3 times  in a row
 
 *** Database ***
 
-step     = 300
+step     = 60
 pings    = 10
 
 
@@ -72,7 +72,7 @@ unison_tolerance = 2
 binary = /usr/bin/tcpping-sp
 forks = 5
 offset = 50%
-step = 300
+step = 60
 timeout = 5
 
 
@@ -155,7 +155,7 @@ host = /global/cf~SLAVE_CODE /global/hk-pccw~SLAVE_CODE /global/sg-vu~SLAVE_CODE
 menu = Cloudflare
 title = Cloudflare
 slaves = SLAVE_CODE
-host = 104.16.124.96
+host = www.cloudflare.com
 
 ++ hk-pccw
 

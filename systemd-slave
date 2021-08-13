@@ -1,0 +1,18 @@
+[Unit]
+Description=Smokeping Service, Network Latency Graphical Viewer
+After=network.service smokeping-master.service
+
+[Service]
+Type=forking
+Environment=MASTER=127.0.0.1
+Environment=CACHEDIR=/usr/local/smokeping/cache
+Environment=SECRET=/usr/local/smokeping/etc/secret
+Environment=NAME=SLAVE_CODE
+ExecStartPre=/bin/sh -c "/usr/bin/nc -zv -w 5 ${MASTER} 9008 &> /dev/null && echo 'Smokeping Master Accepts connections...'"
+ExecStartPre=/bin/echo "/usr/local/smokeping/bin/smokeping --master-url=http://${MASTER}:9008/ --cache-dir=${CACHEDIR} --slave-name=${NAME} --shared-secret=${SECRET} --debug-daemon"
+ExecStart=/bin/sh -c "/usr/local/smokeping/bin/smokeping --master-url=http://${MASTER}:9008/ --cache-dir=${CACHEDIR} --slave-name=${NAME} --shared-secret=${SECRET} --debug-daemon"
+KillSignal=SIGTERM
+ExecReload=/bin/sh -c "/usr/local/smokeping/bin/smokeping --master-url=http://${MASTER}:9008/ --cache-dir=${CACHEDIR} --slave-name=${NAME} --shared-secret=${SECRET} --debug-daemon --reload"
+
+[Install]
+WantedBy=default.target

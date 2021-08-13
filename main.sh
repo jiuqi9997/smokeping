@@ -7,8 +7,8 @@ nginx_dir="/etc/nginx"
 nginx_conf_dir="/etc/nginx/conf.d"
 
 install_packages() {
-	rpm_packages="tar zip unzip openssl openssl-devel lsof git jq socat nginx crontabs make gcc rrdtool rrdtool-perl perl-core spawn-fcgi traceroute zlib zlib-devel wqy-zenhei-fonts"
-	apt_packages="tar zip unzip openssl libssl-dev lsof git jq socat nginx cron make gcc rrdtool librrds-perl spawn-fcgi traceroute zlib1g zlib1g-dev fonts-droid-fallback"
+	rpm_packages="tar zip unzip openssl openssl-devel lsof git jq socat nginx crontabs make gcc rrdtool rrdtool-perl perl-core spawn-fcgi traceroute zlib zlib-devel wqy-zenhei-fonts nc"
+	apt_packages="tar zip unzip openssl libssl-dev lsof git jq socat nginx cron make gcc rrdtool librrds-perl spawn-fcgi traceroute zlib1g zlib1g-dev fonts-droid-fallback netcat"
 	if [[ $ID == "debian" || $ID == "ubuntu" ]]; then
 		$PM update
 		$INS wget curl gnupg2 ca-certificates dmidecode lsb-release
@@ -112,7 +112,7 @@ EOF
 	systemctl enable nginx
 	systemctl start nginx
 	ps -ef | sed '/grep/d' | grep -q nginx || error=1
-	[[ $error ]] && echo "Nginx 安装失败" && exit 1
+	[[ $error -eq 1 ]] && echo "Nginx 安装失败" && exit 1
 }
 
 get_info() {
@@ -153,24 +153,26 @@ compile_smokeping() {
 configure() {
 	origin="https://github.com/jiuqi9997/smokeping/raw/main"
 	ip=$(curl -sL https://api64.ipify.org -4) || error=1
-	[[ $error ]] && echo "获取本机 IP 地址失败" && exit 1
+	[[ $error -eq 1 ]] && echo "获取本机 IP 地址失败" && exit 1
 	wget $origin/tcpping-sp -O /usr/bin/tcpping-sp && chmod +x /usr/bin/tcpping-sp
 	wget $origin/nginx.conf -O $nginx_conf_dir/smokeping.conf && nginx -s reload
 	wget $origin/config -O /usr/local/smokeping/etc/config
-	wget $origin/systemd -O /etc/systemd/system/smokeping.service && systemctl enable smokeping
-	wget $origin/slave.sh -O /usr/local/smokeping/bin/slave.sh
+	wget $origin/systemd-fcgi -O /etc/systemd/system/spawn-fcgi.service
+	wget $origin/systemd-master -O /etc/systemd/system/smokeping-master.service
+	wget $origin/systemd-slave -O /etc/systemd/system/smokeping-slave.service
+	systemctl enable spawn-fcgi smokeping-master smokeping-slave
 	sed -i 's/some.url/'$ip':9008/g' /usr/local/smokeping/etc/config
-	sed -i 's/SLAVE_CODE/'$code'/g' /usr/local/smokeping/etc/config /usr/local/smokeping/bin/slave.sh
+	sed -i 's/SLAVE_CODE/'$code'/g' /usr/local/smokeping/etc/config /etc/systemd/system/smokeping-slave.service
 	sed -i 's/SLAVE_NAME/'$name'/g' /usr/local/smokeping/etc/config
 	echo "$code:$sec" > /usr/local/smokeping/etc/smokeping_secrets.dist
-	echo "$sec" > /usr/local/smokeping/etc/secrets
-	chmod 700 /usr/local/smokeping/etc/secrets /usr/local/smokeping/etc/smokeping_secrets.dist
+	echo "$sec" > /usr/local/smokeping/etc/secret
+	chmod 700 /usr/local/smokeping/etc/secret /usr/local/smokeping/etc/smokeping_secrets.dist
 	chown nginx:nginx /usr/local/smokeping/etc/smokeping_secrets.dist
 	cd /usr/local/smokeping/htdocs
 	mkdir -p data var cache ../cache
 	mv smokeping.fcgi.dist smokeping.fcgi
 	../bin/smokeping --debug || error=1
-	[[ $error ]] && echo "测试运行失败！" && exit 1
+	[[ $error -eq 1 ]] && echo "测试运行失败！" && exit 1
 }
 
 
@@ -180,10 +182,8 @@ install_packages
 compile_smokeping
 configure
 
-systemctl start smokeping
-sleep 3
-systemctl status smokeping | grep -q 'TCPPing' || error=1
-[[ $error ]] && echo "启动失败" && exit 1
+systemctl start spawn-fcgi smokeping-master smokeping-slave || error=1
+[[ $error -eq 1 ]] && echo "启动失败" && exit 1
 
 rm -rf /tmp/smokeping
 

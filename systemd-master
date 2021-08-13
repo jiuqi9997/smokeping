@@ -1,0 +1,14 @@
+[Unit]
+Description=Smokeping Service, Network Latency Graphical Viewer
+After=network.service
+Requires=spawn-fcgi.service
+
+[Service]
+Type=forking
+Environment=CONFFILE=/usr/local/smokeping/etc/config
+ExecStartPre=/usr/local/smokeping/bin/smokeping --check
+ExecStart=/usr/local/smokeping/bin/smokeping --config ${CONFFILE} --debug-daemon
+SuccessExitStatus=1
+
+[Install]
+WantedBy=default.target

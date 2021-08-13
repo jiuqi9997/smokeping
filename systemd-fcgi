@@ -1,0 +1,10 @@
+[Unit]
+Description=Spawn-fcgi Service
+After=network.service
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/spawn-fcgi -a 127.0.0.1 -p 9007 -P /var/run/smokeping-fastcgi.pid -f /usr/local/smokeping/htdocs/smokeping.fcgi
+
+[Install]
+WantedBy=default.target

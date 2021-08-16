@@ -1,6 +1,6 @@
 [Unit]
 Description=Smokeping Service, Network Latency Graphical Viewer
-After=network.service smokeping-master.service
+After=network.service smokeping-master.service caddy-sp.service
 
 [Service]
 Type=forking

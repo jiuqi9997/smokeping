@@ -71,7 +71,7 @@ configure() {
 	wget $origin/systemd-fcgi -O /etc/systemd/system/spawn-fcgi.service
 	wget $origin/systemd-master -O /etc/systemd/system/smokeping-master.service
 	wget $origin/systemd-slave -O /etc/systemd/system/smokeping-slave.service
-	sed -i 's/port1/'${port1:-9008}'/g;s/port2/'${port2:-9007}'/g' $caddy_dir/Caddyfile /etc/systemd/system/smokeping-slave.service
+	sed -i 's/port1/'${port1:-9008}'/g;s/port2/'${port2:-9007}'/g' $caddy_dir/Caddyfile /etc/systemd/system/smokeping-slave.service /etc/systemd/system/spawn-fcgi.service
 	sed -i 's/SLAVE_CODE/'$code'/g' /usr/local/smokeping/etc/config /etc/systemd/system/smokeping-slave.service
 	systemctl daemon-reload
 	systemctl enable caddy-sp spawn-fcgi smokeping-master smokeping-slave

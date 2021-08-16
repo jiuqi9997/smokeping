@@ -1,0 +1,18 @@
+:port1 {
+	root * /usr/local/smokeping/htdocs/
+	file_server {
+		index smokeping.fcgi
+	}
+	encode gzip
+	@path {
+		path /
+		path /*.fcgi
+	}
+	reverse_proxy @path 127.0.0.1:port2 {
+		transport fastcgi {
+			dial_timeout 5s
+			read_timeout 5s
+			write_timeout 5s
+		}
+	}
+}

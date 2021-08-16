@@ -1,0 +1,15 @@
+[Unit]
+Description=Caddy for SmokePing
+After=network-online.target
+Wants=network-online.target systemd-networkd-wait-online.service
+
+[Service]
+LimitNOFILE=1048576
+Environment="HOME=/etc/caddy-sp"
+Environment="XDG_CONFIG_HOME=/etc/caddy-sp"
+Environment="XDG_DATA_HOME=/etc/caddy-sp"
+WorkingDirectory=/etc/caddy-sp
+ExecStart=/usr/bin/caddy-sp run
+Restart=always
+[Install]
+WantedBy=multi-user.target

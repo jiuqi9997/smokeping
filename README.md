@@ -2,15 +2,13 @@
 
 [SmokePing](https://oss.oetiker.ch/smokeping) 是由 RRDtool 的作者 Tobi Oetiker 开发的一款监控网络状态和稳定性的开源软件。使用脚本安装后，SmokePing 会定时向目标发送 TCP 数据包，并对返回值进行测量和记录，通过 RRDtool 制图程序图形化地展示在各个时段内网络的延迟、抖动和丢包率，帮助我们更清楚、更直观地了解服务器的网络状况。
 
-本脚本会使 SmokePing 运行在 Nginx 上，为了与可能存在的其他 Web 服务共存，需要9007和9008端口，请确保它们没有被占用。
+本脚本会使 SmokePing 运行在 Caddy 上，与其他 WEB 服务隔离。
 
 目前支持的 Linux 发行版：
 ```
 Debian 9+
 Ubuntu 18+
 CentOS 7+
-Amazon Linux 2
-Oracle Linux 7+
 ```
 
 ## 安装

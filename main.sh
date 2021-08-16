@@ -160,6 +160,7 @@ configure() {
 	wget $origin/systemd-fcgi -O /etc/systemd/system/spawn-fcgi.service
 	wget $origin/systemd-master -O /etc/systemd/system/smokeping-master.service
 	wget $origin/systemd-slave -O /etc/systemd/system/smokeping-slave.service
+	systemctl daemon-reload
 	systemctl enable spawn-fcgi smokeping-master smokeping-slave
 	sed -i 's/some.url/'$ip':9008/g' /usr/local/smokeping/etc/config
 	sed -i 's/SLAVE_CODE/'$code'/g' /usr/local/smokeping/etc/config /etc/systemd/system/smokeping-slave.service

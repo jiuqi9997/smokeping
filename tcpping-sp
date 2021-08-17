@@ -28,7 +28,7 @@ do
 	then
 		portflag="-p $5"
 	fi
-	tr=$(traceroute -n -T -f 255 -m 255 -q 1 -w 3 $portflag $4 2>&1| tail -n1 | sed 's/  / /g')
+	tr=$(traceroute -n -T -f 255 -m 255 -q 1 -w 0.5 $portflag $4 2>&1| tail -n1 | sed 's/  / /g')
 	if ! echo "$tr" | grep 'ms$' > /dev/null
 	then
 		output="$output -"

@@ -26,8 +26,8 @@ comment = loss 3 times  in a row
 
 *** Database ***
 
-step     = 60
-pings    = 10
+step     = 10
+pings    = 5
 
 
 AVERAGE  0.5   1  1008
@@ -56,6 +56,8 @@ width = 600
 height = 200
 unison_tolerance = 2
 
+"Last 5 Minutes"    5m
+"Last 10 Minutes"    10m
 "Last 30 Minutes"    30m
 "Last 1 Hour"    1h
 "Last 3 Hours"    3h
@@ -72,7 +74,7 @@ unison_tolerance = 2
 binary = /usr/bin/tcpping-sp
 forks = 5
 offset = 50%
-step = 60
+step = 10
 timeout = 5
 
 
